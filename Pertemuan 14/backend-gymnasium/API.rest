@@ -1,0 +1,139 @@
+### ============================================================
+### SKENARIO DEMO DATA GYMNASIUM (Ikuti urutan nomor)
+### ============================================================
+
+### 1. REGISTER ADMIN (WAJIB DULUAN!)
+# Kita buat akun dulu biar datanya masuk ke database
+POST http://localhost:5000/users
+Content-Type: application/json
+
+{
+    "name": "Admin Haikal",
+    "email": "admin@gym.com",
+    "password": "password123",
+    "confPassword": "password123",
+    "role": "admin"
+}
+
+###
+### 2. LOGIN ADMIN (Setelah register sukses, baru login)
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "email": "admin@gym.com",
+    "password": "password123"
+}
+
+###
+### 3. CEK LOGIN (Opsional, memastikan session aktif)
+GET http://localhost:5000/me
+
+###
+### 4. TAMBAH PELATIH BARU (Create Trainer)
+POST http://localhost:5000/trainers
+Content-Type: application/json
+
+{
+    "name": "Coach Rudy",
+    "specialization": "Boxing",
+    "phone": "08123456789"
+}
+
+###
+### 5. LIHAT SEMUA PELATIH (Get Trainers)
+# TUGAS PENTING: 
+# 1. Klik Send Request
+# 2. Lihat respon di kanan
+# 3. Cari field "id" (Angkanya mungkin 1).
+# 4. HAFALKAN ANGKA ITU untuk langkah selanjutnya.
+GET http://localhost:5000/trainers
+
+###
+### 6. TAMBAH KELAS GYM (Create Class)
+# PENTING: Ganti "trainerId": 1 di bawah dengan ANGKA ID yang kamu dapat dari Langkah 5.
+POST http://localhost:5000/classes
+Content-Type: application/json
+
+{
+    "name": "Body Combat",
+    "day": "Jumat",
+    "time": "18:30 - 20:00",
+    "price": 45000,
+    "trainerId": 6
+}
+
+###
+### 7. LIHAT KELAS (Get Classes)
+# Perhatikan di responnya, data pelatih (Coach Deddy) ikut muncul (Join Table)
+GET http://localhost:5000/classes
+
+###
+### 8. TAMBAH MEMBER BARU (Create Member)
+POST http://localhost:5000/members
+Content-Type: application/json
+
+{
+    "name": "Cindi",
+    "email": "rizky@gmail.com",
+    "phone": "082212345678",
+    "gender": "Laki-laki",
+    "membershipType": "Reguler",
+    "status": "Active"
+}
+
+###
+### 9. LIHAT MEMBER (Get Members)
+GET http://localhost:5000/members
+
+###
+### 10. LOGOUT
+DELETE http://localhost:5000/logout
+
+###
+### 11. Edit Data Member (Update)
+# Ganti UUID di bawah dengan UUID Member yang asli (Lihat dari respon No. 9)
+PATCH http://localhost:5000/members/ca8b850b-249b-4df0-952a-eaf783d5b852
+Content-Type: application/json
+
+{
+    "name": "Yogas",
+    "membershipType": "Yearly",
+    "status": "Expired"
+}
+
+### 12. Hapus Member (Delete)
+# Ganti UUID di bawah dengan UUID Member yang asli
+DELETE http://localhost:5000/members/ca8b850b-249b-4df0-952a-eaf783d5b852
+
+### ==============================================
+### TEST UPDATE & DELETE (TRAINER & CLASS)
+### ==============================================
+
+### 13. Update Data Trainer (Ganti UUID Trainer asli)
+# Note: Harus Login sebagai Admin dulu!
+PATCH http://localhost:5000/trainers/MASUKKAN_UUID_TRAINER_DISINI
+Content-Type: application/json
+
+{
+    "name": "Coach Deddy Corbuzier",
+    "specialization": "Master Mentalist & Gym"
+}
+
+### 14. Hapus Trainer
+# WARNING: Jika Trainer ini punya Kelas, biasanya akan error (Foreign Key)
+# Hapus dulu kelasnya, baru hapus trainernya.
+DELETE http://localhost:5000/trainers/MASUKKAN_UUID_TRAINER_DISINI
+
+
+### 15. Update Data Kelas (Ganti UUID Kelas asli)
+PATCH http://localhost:5000/classes/MASUKKAN_UUID_CLASS_DISINI
+Content-Type: application/json
+
+{
+    "name": "Yoga Malam Jumat",
+    "price": 75000
+}
+
+### 16. Hapus Kelas
+DELETE http://localhost:5000/classes/MASUKKAN_UUID_CLASS_DISINI
